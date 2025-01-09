@@ -106,7 +106,7 @@ const Timer = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-grey">
       {/* Moon Animation Container */}
-      <div className="relative w-64 h-64 mb-12 border-2">
+      <div className="relative w-64 h-64 mb-6 border-2">
         <svg width="260" height="260" viewBox="0 0 260 260">
           {/* Stars */}
           {stars.map(star => (
@@ -136,13 +136,20 @@ const Timer = () => {
         </svg>
       </div>
 
+      {/* Timer Display */}
+      <div className="mb-3 text-2xl text-gray-400">
+        {Math.floor(remainingSeconds / 3600).toString().padStart(2, '0')}:
+        {Math.floor((remainingSeconds % 3600) / 60).toString().padStart(2, '0')}:
+        {(remainingSeconds % 60).toString().padStart(2, '0')}
+      </div>
+
       {/* Time Input */}
       <div className="flex gap-0 mb-6">
         <input
           type="text"
           value={hours}
           onChange={(e) => handleInputChange(e, setHours, 23)}
-          className="w-16 p-1 text-center bg-transparent text-white border-b border-gray-600"
+          className="w-16 p-1 text-center bg-transparent text-white border-b border-gray-600 text-lg"
           placeholder="00"
         />
         <text className="w-4 p-1 text-center bg-transparent text-white border-b border-gray-600">
@@ -152,7 +159,7 @@ const Timer = () => {
           type="text"
           value={minutes}
           onChange={(e) => handleInputChange(e, setMinutes, 59)}
-          className="w-16 p-1 text-center bg-transparent text-white border-b border-gray-600"
+          className="w-16 p-1 text-center bg-transparent text-white border-b border-gray-600 text-lg"
           placeholder="00"
         />
         <text className="w-4 p-1 text-center bg-transparent text-white border-b border-gray-600">
@@ -162,7 +169,7 @@ const Timer = () => {
           type="text"
           value={seconds}
           onChange={(e) => handleInputChange(e, setSeconds, 59)}
-          className="w-16 p-1 text-center bg-transparent text-white border-b border-gray-600"
+          className="w-16 p-1 text-center bg-transparent text-white border-b border-gray-600 text-lg"
           placeholder="30"
         />
       </div>
@@ -183,12 +190,6 @@ const Timer = () => {
         </button>
       </div>
 
-      {/* Timer Display */}
-      <div className="mt-2 text-m text-gray-400">
-        {Math.floor(remainingSeconds / 3600).toString().padStart(2, '0')}:
-        {Math.floor((remainingSeconds % 3600) / 60).toString().padStart(2, '0')}:
-        {(remainingSeconds % 60).toString().padStart(2, '0')}
-      </div>
     </div>
   );
 };

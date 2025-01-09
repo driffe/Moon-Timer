@@ -1,6 +1,8 @@
 {
+  
   "name": "moon_timer",
   "version": "0.1.0",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "cra-template": "1.2.0",
@@ -22,6 +24,8 @@
       "react-app/jest"
     ]
   },
+  "homepage": ".",
+  
   "browserslist": {
     "production": [
       ">0.2%",

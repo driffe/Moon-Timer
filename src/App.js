@@ -4,7 +4,14 @@ import './App.css';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" style={{ 
+      width: '350px', 
+      height: '500px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#000'
+    }}>
       <Timer />
     </div>
   );

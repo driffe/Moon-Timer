@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Play, RefreshCw } from 'lucide-react';
+import { Play, Pause, RefreshCw } from 'lucide-react';
 
 const Timer = () => {
   const [hours, setHours] = useState('00');
@@ -28,10 +28,14 @@ const Timer = () => {
   };
 
   const startTimer = () => {
-    const total = calculateTotalSeconds();
-    if (total > 0) {
-      setTotalSeconds(total);
-      setRemainingSeconds(total);
+    if (remainingSeconds === 0) {
+      const total = calculateTotalSeconds();
+      if (total > 0) {
+        setTotalSeconds(total);
+        setRemainingSeconds(total);
+        setIsRunning(true);
+      }
+    } else {
       setIsRunning(true);
     }
   };
@@ -68,24 +72,13 @@ const Timer = () => {
   }, [isRunning]);
 
   const progress = totalSeconds > 0 ? (remainingSeconds / totalSeconds) * 100 : 0;
-  
-  // 달의 채워짐 상태를 로그로 출력
-  useEffect(() => {
-    const leftArcRadius = 60 - (progress/100 * 60);
-        
-    console.log({
-      '1. 시작점': 'M 130 70',
-      '2. 오른쪽 반원': 'A 60 60 0 1 1 130 190',
-      '3. 왼쪽 반원': `A ${leftArcRadius} 60 0 1 0 130 70`,
-    });
-  }, [progress, totalSeconds, remainingSeconds]);
 
   // Generate random stars
   const generateStars = (count) => {
     const stars = [];
     const centerX = 130;
     const centerY = 130;
-    const moonRadius = 70; // 달 반경보다 약간 큰 값으로 설정
+    const moonRadius = 70; 
 
     while (stars.length < count) {
       const x = Math.random() * 240 + 10;
@@ -132,12 +125,11 @@ const Timer = () => {
           {/* Moon base circle - outline */}
           <circle cx="130" cy="130" r="60" fill="transparent" stroke="#333" strokeWidth="1" />
           
-          {/* Moon fill - using elliptical arc */}
           <path
             d={`
-              M 130 70
-              A ${60 - (progress/100 * 60)} 60 0 1 0 130 190
-              A 60 60 0 1 1 130 70
+                M 130 70
+                A 60 60 0 1 0 130 190
+                A ${progress > 50 ? ((progress-50)*2/100 * 60) : 60 - (progress*2/100 * 60)} 60 0 0 ${progress > 50 ? 1 : 0} 130 70
             `}
             fill="#FFFFFF"
           />
@@ -153,6 +145,9 @@ const Timer = () => {
           className="w-16 p-1 text-center bg-transparent text-white border-b border-gray-600"
           placeholder="00"
         />
+        <text className="w-4 p-1 text-center bg-transparent text-white border-b border-gray-600">
+          :
+        </text>
         <input
           type="text"
           value={minutes}
@@ -160,6 +155,9 @@ const Timer = () => {
           className="w-16 p-1 text-center bg-transparent text-white border-b border-gray-600"
           placeholder="00"
         />
+        <text className="w-4 p-1 text-center bg-transparent text-white border-b border-gray-600">
+          :
+        </text>
         <input
           type="text"
           value={seconds}
@@ -175,18 +173,18 @@ const Timer = () => {
           onClick={isRunning ? stopTimer : startTimer}
           className="p-2 text-white hover:text-gray-300"
         >
-          <Play size={20} />
+          {isRunning ? <Pause size={24} /> : <Play size={24} />}
         </button>
         <button
           onClick={resetTimer}
           className="p-2 text-white hover:text-gray-300"
         >
-          <RefreshCw size={20} />
+          <RefreshCw size={24} />
         </button>
       </div>
 
       {/* Timer Display */}
-      <div className="mt-2 text-sm text-gray-400">
+      <div className="mt-2 text-m text-gray-400">
         {Math.floor(remainingSeconds / 3600).toString().padStart(2, '0')}:
         {Math.floor((remainingSeconds % 3600) / 60).toString().padStart(2, '0')}:
         {(remainingSeconds % 60).toString().padStart(2, '0')}
